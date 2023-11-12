@@ -93,3 +93,38 @@ export const inputRandomData = async (req, res) => {
   }
 }
 
+export const inputMultipleRandom = async (req, res) => {
+  try {
+    const filePath = path.join(__dirname, '../Fitness_Records_Hackathon.xlsx');
+    const workbook = xlsx.readFile(filePath);
+    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+
+    const data = xlsx.utils.sheet_to_json(worksheet, {header: 1});
+    const headers = data[0];
+    const idIndex = headers.indexOf('Patient_ID');
+
+    for (let Patient_ID = 1; Patient_ID <= 100; Patient_ID++) {
+      for (let i = 0; i < 10; i++) {
+        const newRow = {
+          'Patient_ID': Patient_ID,
+          'Weight': Math.random() * 100,
+          'AvgHR': Math.random() * 200,
+          'ExercisesPW': Math.floor(Math.random() * 7),
+          'ExerciseDuration': Math.random() * 120,
+          'StepsPerDay': Math.floor(Math.random() * 10000)
+        };
+
+        data.push(Object.values(newRow));
+      }
+    }
+
+    const updatedWorksheet = xlsx.utils.aoa_to_sheet(data);
+    workbook.Sheets[workbook.SheetNames[0]] = updatedWorksheet;
+    xlsx.writeFile(workbook, filePath);
+
+    res.status(200).send('Data updated successfully for all patients');
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('An error occurred');
+  }
+}
