@@ -1,6 +1,9 @@
-import fs from 'fs';
+import { fileURLToPath } from 'url';
 import path from 'path';
 import xlsx from 'xlsx';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const inputFitnessData = async (req, res) => {
   const { Patient_ID, weight, avgHR, exercisesPW, exerciseDuration, stepsPerDay } = req.body;
