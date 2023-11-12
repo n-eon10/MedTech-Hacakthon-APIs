@@ -1,8 +1,9 @@
 import express from "express";
-import {inputFitnessData} from "../controllers/fitnessDataControllers.mjs";
+import {inputFitnessData, inputRandomData} from "../controllers/fitnessDataControllers.mjs";
 
 const router = express.Router();
 
 router.post("/inputdata", inputFitnessData);
+router.post("/inputrandomdata", inputRandomData);
 
 export default router;
